@@ -1,0 +1,44 @@
+#avoid flicker
+double_buffer yes
+
+#own window to run simultanious 2 or more conkys
+own_window  yes
+own_window_transparent yes
+own_window_type override
+own_window_hints undecorate,sticky,skip_taskbar,skip_pager
+
+#borders
+draw_borders no
+border_margin 1
+
+#shades
+draw_shades no
+
+#position
+gap_x 100
+gap_y 0
+alignment bottom_left
+
+#behaviour
+update_interval 1.0
+
+#colour
+#default_color  8f8f8f
+default_color    white
+#default_shade_color 000000
+own_window_colour 262729
+
+#font
+use_xft yes
+xftfont sans:size=9
+
+# Force UTF8? note that UTF8 support required XFT
+override_utf8_locale yes
+
+#to prevent window from moving
+use_spacer none
+minimum_size 1200 0
+
+#${execi 60 curl http://coinmarketcap-nexuist.rhcloud.com/api/eth/price | grep -w "usd" }
+TEXT
+${alignc}${execi 1500 wget -q -O - "http://www.google.com/finance/converter?a=1&from=USD&to=PHP"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'}     []    ${execi 1500 wget -q -O - "http://www.google.com/finance/converter?a=1&from=BTC&to=PHP"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'}    []   ${execi 360 wget -q -O - "http://www.google.com/finance/converter?a=1&from=BTC&to=USD"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'} []     1 ETH = ${execi 450 curl https://api.nanopool.org/v1/eth/prices | awk -F',' '{print $3}' | awk -F: '{print $2}'} USD

@@ -1,0 +1,95 @@
+# conky configuration
+#
+# The list of variables has been removed from this file in favour
+# of keeping the documentation more maintainable.
+# Check http://conky.sf.net for an up-to-date-list.
+#
+# For ideas about how to modify conky, please see:
+# http://crunchbanglinux.org/forums/topic/59/my-conky-config/
+#
+# For help with conky, please see:
+# http://crunchbanglinux.org/forums/topic/2047/conky-help/
+#
+# Enjoy! :)
+##############################################
+# Settings
+##############################################
+background yes
+use_xft yes
+xftfont Liberation Sans:size=9
+xftalpha 1
+update_interval 1.0
+total_run_times 0
+own_window yes
+own_window_transparent yes
+##############################################
+# Compositing tips:
+# Conky can play strangely when used with
+# different compositors. I have found the
+# following to work well, but your mileage
+# may vary. Comment/uncomment to suit.
+##############################################
+## no compositor
+own_window_type override
+own_window_argb_visual no
+
+## xcompmgr
+#own_window_type override
+#own_window_argb_visual yes
+
+## cairo-compmgr
+#own_window_type desktop
+#own_window_argb_visual yes
+##############################################
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 200 200
+maximum_width 240
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders no
+default_color white #656667
+default_shade_color 000000
+default_outline_color 828282
+alignment top_left
+gap_x 12
+gap_y 56
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+override_utf8_locale yes #for temp output with an A
+
+##############################################
+#  Output
+##############################################
+TEXT
+
+${hr}
+
+Uptime:$alignr$uptime
+
+CPU1:${alignr}${cpubar cpu1 8,60}
+CPU2:${alignr}${cpubar cpu2 8,60}
+CPU3:${alignr}${cpubar cpu3 8,60}
+CPU4:${alignr}${cpubar cpu4 8,60}
+Temp:${alignr}${execi 10 sensors | grep ^temp1 | tail -n 1 |awk '{print $2}'}
+RAM: $memperc% ${alignr}${membar 8,60}
+
+Disk usage:$alignr${fs_bar 8,60}
+${if_up wlp3s0}
+802.11 quality:$alignr${wireless_link_bar 8,60 wlp3s0}
+802.11 bitrate:$alignr${wireless_bitrate wlp3s0}
+${endif}${if_up tun0} VPN is active. ${endif}
+
+${hr}
+
+Total ETH:  ${execi 450 curl https://api.nanopool.org/v1/eth/user/0xFeCba1D1308f54FE7a6DB88FfB3312b3cFFcCdA9 | grep -w "balance" | awk '{gsub("\"","",$2);gsub(",","",$2);print $2}'}
+
+
+#${execi 1500 wget -q -O - "http://www.google.com/finance/converter?a=1&from=USD&to=PHP"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'}
+
+#${execi 1500 wget -q -O - "http://www.google.com/finance/converter?a=1&from=BTC&to=PHP"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'}
+
+#${execi 1500 wget -q -O - "http://www.google.com/finance/converter?a=1&from=BTC&to=USD"|grep "<div id=currency_converter_result>"|sed 's/<[^>]*>//g'}
+
